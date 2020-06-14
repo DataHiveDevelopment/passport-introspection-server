@@ -1,0 +1,33 @@
+{
+    "name": "datahivedevelopment/passport-introspection-server",
+    "description": "Provides Laravel's Passport server with the capabilities to respond to OAuth Introspection requests",
+    "require": {
+        "php": "^7.2",
+        "laravel/passport": "^9.2"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dustin Schreiber",
+            "email": "dustinschreiber@datahivedev.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/datahivedevelopment/passport-introspection-server/issues",
+        "source": "https://github.com/datahivedevelopment/passport-introspection-server"
+    },
+    "autoload": {
+        "psr-4": {
+            "DataHiveDevelopment\\PassportIntrospectionServer\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "DataHiveDevelopment\\PassportIntrospectionServer\\IntrospectionServiceProvider"
+            ]
+        }
+    }
+}
