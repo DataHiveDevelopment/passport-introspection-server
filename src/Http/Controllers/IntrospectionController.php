@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\ClientRepository;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
-use Laravel\Passport\Bridge\AccessTokenRepository;
+use Laravel\Passport\TokenRepository;
 
 class IntrospectionController
 {
@@ -28,9 +28,9 @@ class IntrospectionController
     private $jwt;
 
     /**
-     * @var \Laravel\Passport\Bridge\AccessTokenRepository
+     * @var \Laravel\Passport\TokenRepository
      */
-    private $accessTokenRepository;
+    private $tokenRepository;
 
     /**
      * @var \Laravel\Passport\ClientRepository
@@ -40,17 +40,17 @@ class IntrospectionController
     /**
      * Setup repositories, servers, and parsers.
      *
-     * @param \Lcobucci\JWT\Parser  $jwt
-     * @param \Laravel\Passport\Bridge\AccessTokenRepository  $accessTokenRepository
+     * @param \Lcobucci\JWT\Parser                $jwt
+     * @param \Laravel\Passport\TokenRepository   $tokenRepository
      * @param \Laravel\Passport\ClientRepository  $clientRepository
      */
     public function __construct(
         Parser $jwt,
-        AccessTokenRepository $accessTokenRepository,
+        TokenRepository $tokenRepository,
         ClientRepository $clientRepository
     ) {
         $this->jwt = $jwt;
-        $this->accessTokenRepository = $accessTokenRepository;
+        $this->tokenRepository = $tokenRepository;
         $this->clientRepository = $clientRepository;
     }
 
@@ -120,7 +120,7 @@ class IntrospectionController
          * @var \Laravel\Passport\Token  $passportToken
          */
         $token = $this->jwt->parse($request->token);
-        $passportToken = PassportToken::find($token->getClaim('jti'));
+        $passportToken = $this->tokenRepository->find($token->getClaim('jti'));
         
         // Verify and validate the token
         if (! $this->isTokenValid($token)) {
@@ -183,7 +183,7 @@ class IntrospectionController
         }
 
         // Confirm the token was not revoked
-        if ($this->accessTokenRepository->isAccessTokenRevoked($token->getClaim('jti'))) {
+        if ($this->tokenRepository->isAccessTokenRevoked($token->getClaim('jti'))) {
             return false;
         }
 
