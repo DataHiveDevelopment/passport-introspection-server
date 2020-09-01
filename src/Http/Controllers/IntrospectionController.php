@@ -131,7 +131,7 @@ class IntrospectionController
         $json = [
             'active' => true,
             'scope' => trim(implode(' ', $token->getClaim('scopes'))),
-            'client_id' => intval($token->getClaim('aud')), // The client ID that requested the token
+            'client_id' => $token->getClaim('aud'), // The client ID that requested the token
             'token_type' => 'access_token', // Only support access token introspection at this time
             'exp' => intval($token->getClaim('exp')), // Expiration time
             'iat' => intval($token->getClaim('iat')), // Issued at
